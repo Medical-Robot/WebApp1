@@ -1,38 +1,25 @@
-package com.example.webapp.Service;
+package com.example.webapp.Test;
 
 import com.example.webapp.Entity.Pacient;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.webapp.Service.PacientService;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class PacientService {
-    private final FirebaseFirestore db;
+public class PacientServiceTest {
+    public static void main(String[] args) {
+        // Initialize Firebase Realtime Database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference db = database.getReference();
 
-    public PacientService(FirebaseFirestore db) {
-        this.db = db;
-    }
+        // Initialize PacientService with Firebase database reference
+        PacientService pacientService = new PacientService(db);
 
-    public List<Pacient> getAllPacients() {
-        List<Pacient> pacients = new ArrayList<>();
-        // Fetch pacients from Firestore
-        try {
-            db.collection("pacients").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    for (var document : task.getResult()) {
-                        String id = document.getId();
-                        String date = document.getString("date");
-                        Pacient pacient = new Pacient(id, date);
-                        pacients.add(pacient);
-                    }
-                } else {
-                    System.out.println("Error getting documents: " + task.getException());
-                }
-            }).get(); // Blocking call to wait for Firestore operation to complete
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        // Test getAllPacients method
+        List<Pacient> pacients = pacientService.getAllPacients();
+        for (Pacient pacient : pacients) {
+            System.out.println("Key: " + pacient.getKey() + ", Value: " + pacient.getValue());
         }
-        return pacients;
     }
 }

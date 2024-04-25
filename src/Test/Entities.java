@@ -1,32 +1,29 @@
 package com.example.webapp.Entity;
 
 public class Pacient {
-    private String id;
-    private String date;
-    // Add more properties as needed
+    private String key;
+    private String value;
 
     // Constructor
-    public Pacient(String id, String date) {
-        this.id = id;
-        this.date = date;
+    public Pacient(String key, String value) {
+        this.key = key;
+        this.value = value;
     }
 
     // Getters and setters
-    public String getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getDate() {
-        return date;
+    public String getValue() {
+        return value;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setValue(String value) {
+        this.value = value;
     }
-
-    // Add more getters and setters as needed
 }
