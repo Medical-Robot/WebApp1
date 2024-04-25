@@ -2,9 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tabel Date</title>
+    <!-- Include Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js"></script>
+    <!-- CSS for table styling -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Setting specific column widths */
+        th:nth-child(1), td:nth-child(1) {
+            width: 10%; /* First column is 10% of table width */
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 90%; /* Second column is 90% of table width */
+        }
+    </style>
 </head>
 <body>
+<h1>Tabel Dinamic</h1>
+<table id="dataTable">
+    <thead>
+    <tr>
+        <th>Nr. crt.</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Data will be inserted here -->
+    </tbody>
+</table>
 
+<script>
+    // Initialize Firebase with your project config
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Listen to Firestore collection changes
+    db.collection('your-collection-name').onSnapshot((querySnapshot) => {
+        const tbody = document.querySelector('#dataTable tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${doc.id}</td><td>${data.yourField}</td>`;
+            tbody.appendChild(row);
+        });
+    });
+</script>
 </body>
 </html>
